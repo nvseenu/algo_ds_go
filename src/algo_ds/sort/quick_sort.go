@@ -25,15 +25,10 @@ func partition(arr []interface{}, p int, r int) int {
 
 		if util.IntType(arr[j]) <= x {
 			i++
-			t := arr[i]
-			arr[i] = arr[j]
-			arr[j] = t
+			util.Swap(arr, i, j)
 		}
 	}
-
-	t := arr[i+1]
-	arr[i+1] = arr[r]
-	arr[r] = t
+	util.Swap(arr, i+1, r)
 
 	return i + 1
 }
