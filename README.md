@@ -1,4 +1,4 @@
-This repo is a  place holder to implement algorithms and datastructures i studied along the way.
+This repo is a  place holder to practice algorithms and datastructures i studied along the way.
 
 
 Sort:
