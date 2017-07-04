@@ -3,13 +3,19 @@ package array
 type OrderedArray struct {
 	array     []interface{}
 	totalElms int
+	compare   func(a interface{}, b interface{}) int
 }
 
-func NewOrderedArray(capacity int) *OrderedArray {
-	return &OrderedArray{make([]interface{}, capacity), 0}
+func NewOrderedArray(capacity int, compare func(a interface{}, b interface{}) int) *OrderedArray {
+	return &OrderedArray{make([]interface{}, capacity), 0, compare}
 }
 
-func (a *OrderedArray) Find(key int) (int, bool) {
+func (a *OrderedArray) Find(key interface{}) (interface{}, bool) {
+	_, value, ok := a.find(key)
+	return value, ok
+}
+
+func (a *OrderedArray) find(key interface{}) (int, interface{}, bool) {
 	startIndex := 0
 	endIndex := a.totalElms - 1
 	currentIndex := 0
@@ -18,28 +24,28 @@ func (a *OrderedArray) Find(key int) (int, bool) {
 
 		currentIndex = (startIndex + endIndex) / 2
 
-		v, _ := a.array[currentIndex].(int)
+		res := a.compare(a.array[currentIndex], key)
 
-		if v == key {
-			return currentIndex, true
+		if res == 0 {
+			return currentIndex, a.array[currentIndex], true
 		} else if startIndex > endIndex {
-			return currentIndex, false
-		} else if v < key {
+			return currentIndex, nil, false
+		} else if res > 0 {
 			startIndex = currentIndex + 1
-		} else if v > key {
+		} else if res < 0 {
 			endIndex = currentIndex - 1
 		}
 	}
-	return currentIndex, false
+	return currentIndex, nil, false
 }
 
-func (a *OrderedArray) Insert(key int) {
+func (a *OrderedArray) Insert(key interface{}) {
 	i := 0
 	//Find an index to insert a new key
 	for ; i < a.totalElms; i++ {
-		v, _ := a.array[i].(int)
+		res := a.compare(a.array[i], key)
 
-		if v > key {
+		if res < 0 {
 			break
 		}
 	}
@@ -56,16 +62,16 @@ func (a *OrderedArray) Size() int {
 	return a.totalElms
 }
 
-func (a *OrderedArray) Get(index int) (int, bool) {
+func (a *OrderedArray) Get(index int) (interface{}, bool) {
 	if index < 0 || index >= a.totalElms {
 		return -1, false
 	}
 
-	return a.array[index].(int), true
+	return a.array[index], true
 }
 
-func (a *OrderedArray) Delete(key int) (int, bool) {
-	index, _ := a.Find(key)
+func (a *OrderedArray) Delete(key interface{}) (interface{}, bool) {
+	index, value, _ := a.find(key)
 
 	// Shrink  a space by shiting each element to its previous index
 	i := 0
@@ -75,5 +81,5 @@ func (a *OrderedArray) Delete(key int) (int, bool) {
 	a.array[i] = nil
 	a.totalElms--
 
-	return key, true
+	return value, true
 }

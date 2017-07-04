@@ -1,38 +1,77 @@
 package array
 
 import (
+	"fmt"
 	"testing"
 )
 
-func TestInsert(t *testing.T) {
-	arr := NewOrderedArray(10)
-	arr.Insert(5)
-	arr.Insert(4)
-	arr.Insert(3)
-	arr.Insert(2)
-	arr.Insert(1)
+type employee struct {
+	empId int
+	name  string
+}
+
+func compareEmployees(a interface{}, b interface{}) int {
+	v1, ok := a.(*employee)
+	if !ok {
+		return 1
+	}
+	v2, ok := b.(*employee)
+	if !ok {
+		return -1
+	}
+
+	return v2.empId - v1.empId
+}
+
+func TestFind(t *testing.T) {
+	arr := NewOrderedArray(10, compareEmployees)
+	arr.Insert(&employee{5, "e5"})
+	arr.Insert(&employee{4, "e4"})
+	arr.Insert(&employee{3, "e3"})
+	arr.Insert(&employee{2, "e2"})
+	arr.Insert(&employee{1, "e1"})
 
 	for i := 0; i < arr.totalElms; i++ {
-		if index, _ := arr.Find(i + 1); index != i {
-			t.Error("Expected index ", i, " for key ", i+1, ", but got ", index)
+		if emp, _ := arr.Find(&employee{i + 1, fmt.Sprintf("e%d", i+1)}); emp.(*employee).empId != i+1 {
+			t.Error("Expected empId ", i+1, ", but got ", emp)
+		}
+	}
+
+	if _, ok := arr.Find(&employee{6, "e6"}); ok {
+		t.Error("Expected search result is false, but got ", ok)
+	}
+}
+
+func TestInsert(t *testing.T) {
+	arr := NewOrderedArray(10, compareEmployees)
+	arr.Insert(&employee{5, "e5"})
+	arr.Insert(&employee{4, "e4"})
+	arr.Insert(&employee{3, "e3"})
+	arr.Insert(&employee{2, "e2"})
+	arr.Insert(&employee{1, "e1"})
+
+	for i := 0; i < arr.totalElms; i++ {
+		if emp, _ := arr.Find(&employee{i + 1, fmt.Sprintf("e%d", i+1)}); emp.(*employee).empId != i+1 {
+			t.Error("Expected empId ", i+1, ", but got ", emp)
 		}
 	}
 
 }
 
 func TestDelete(t *testing.T) {
-	arr := NewOrderedArray(10)
-	arr.Insert(5)
-	arr.Insert(4)
-	arr.Insert(3)
-	arr.Insert(2)
-	arr.Insert(1)
+	arr := NewOrderedArray(10, compareEmployees)
+	arr.Insert(&employee{5, "e5"})
+	arr.Insert(&employee{4, "e4"})
+	arr.Insert(&employee{3, "e3"})
+	arr.Insert(&employee{2, "e2"})
+	arr.Insert(&employee{1, "e1"})
 
 	for i := 0; i < 5; i++ {
 		key := i + 1
-		arr.Delete(key)
-		if _, ok := arr.Find(key); ok {
-			t.Error("Key ", key, " should not be exist since we deleted it, but it exists ")
+		emp := &employee{key, fmt.Sprintf("e%d", key)}
+		arr.Delete(emp)
+		if _, ok := arr.Find(emp); ok {
+			t.Error("Key ", emp, " should not be exist since we deleted it, but it exists ")
 		}
 	}
 
@@ -43,15 +82,17 @@ func TestDelete(t *testing.T) {
 }
 
 func TestGet(t *testing.T) {
-	arr := NewOrderedArray(10)
-	arr.Insert(5)
-	arr.Insert(4)
-	arr.Insert(3)
-	arr.Insert(2)
-	arr.Insert(1)
+	arr := NewOrderedArray(10, compareEmployees)
+	arr.Insert(&employee{5, "e5"})
+	arr.Insert(&employee{4, "e4"})
+	arr.Insert(&employee{3, "e3"})
+	arr.Insert(&employee{2, "e2"})
+	arr.Insert(&employee{1, "e1"})
 
 	for i := 0; i < 5; i++ {
-		if v, _ := arr.Get(i); v != (i + 1) {
+		v, _ := arr.Get(i)
+		emp, _ := v.(*employee)
+		if emp.empId != (i + 1) {
 			t.Error("Expected value ", i+1, " at index:", i, " , but got key", v)
 		}
 	}
