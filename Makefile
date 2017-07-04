@@ -1,12 +1,12 @@
 GOCMD=go
 GOBUILD=$(GOCMD) build -v
 GOINSTALL=$(GOCMD) install -v
-GOTEST=$(GOCMD) test
+GOTEST=$(GOCMD) test -v
 GOFMT=$(GOCMD) fmt
 GOCLEAN=$(GOCMD) clean
 
 TOP_LEVEL_PKG := algo_ds
-PKG_LIST := util sort
+PKG_LIST := util sort array
 ALL_LIST := $(PKG_LIST)
 
 CLEAN_LIST := $(foreach pkg, $(ALL_LIST), $(pkg)_clean) 
@@ -24,7 +24,7 @@ test: $(TEST_LIST)
 $(CLEAN_LIST): %_clean:
 	$(GOCLEAN) $(TOP_LEVEL_PKG)/$*
 
-$(TEST_LIST): %_test: $(INSTALL_LIST)
+$(TEST_LIST): %_test: 
 	$(GOTEST) $(TOP_LEVEL_PKG)/$*
 
 $(FORMAT_LIST): %_format:
