@@ -2,7 +2,6 @@ package sort
 
 import (
 	"algo_ds/util"
-	"fmt"
 	"reflect"
 	"testing"
 )
@@ -13,19 +12,45 @@ func compare(a interface{}, b interface{}) int {
 	return v1 - v2
 }
 
-var sorters = []Sorter{
-	NewQuickSort(compare), NewBubbleSort(compare),
+var sorters = []struct {
+	name   string
+	sorter Sorter
+}{
+	{"QuickSort", NewQuickSort(compare)},
+	{"BubbleSort", NewBubbleSort(compare)},
+}
+
+var dataSet = []struct {
+	input  []int
+	output []int
+}{
+	{
+		input:  []int{2, 8, 7, 1, 3, 5, 6, 4},
+		output: []int{1, 2, 3, 4, 5, 6, 7, 8},
+	},
+
+	{
+		input:  []int{1, 2, 3, 4, 5, 6, 7, 8},
+		output: []int{1, 2, 3, 4, 5, 6, 7, 8},
+	},
+	{
+		input:  []int{8, 7, 6, 5, 4, 3, 2, 1},
+		output: []int{1, 2, 3, 4, 5, 6, 7, 8},
+	},
 }
 
 func TestSort(t *testing.T) {
 
-	for _, s := range sorters {
-		arr := util.GenericArray([]int{2, 8, 7, 1, 3, 5, 6, 4})
-		s.Sort(arr)
-		expArr := util.GenericArray([]int{1, 2, 3, 4, 5, 6, 7, 8})
+	for _, sdata := range sorters {
+		for _, data := range dataSet {
 
-		if !reflect.DeepEqual(expArr, arr) {
-			t.Error(fmt.Sprintf("%v", s), " : Arrays are not sorted! expected:", expArr, "But got:", arr)
+			input := util.GenericArray(data.input)
+			output := util.GenericArray(data.output)
+			// Method under test
+			sdata.sorter.Sort(input)
+			if !reflect.DeepEqual(output, input) {
+				t.Error(sdata.name, " : Arrays are not sorted! expected:", output, "But got:", input)
+			}
 		}
 	}
 }
