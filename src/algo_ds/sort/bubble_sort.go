@@ -10,7 +10,7 @@ func (b BubbleSort) Sort(arr []interface{}) {
 
 	for i := len(arr) - 1; i > 0; i-- {
 		for j := 0; j < i; j++ {
-			if b.compare(arr[j], arr[j+1]) < 0 {
+			if b.compare(arr[j], arr[j+1]) > 0 {
 				util.Swap(arr, j, j+1)
 			}
 		}

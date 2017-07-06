@@ -10,7 +10,7 @@ import (
 func compare(a interface{}, b interface{}) int {
 	v1, _ := a.(int)
 	v2, _ := b.(int)
-	return v2 - v1
+	return v1 - v2
 }
 
 var sorters = []Sorter{

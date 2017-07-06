@@ -24,7 +24,7 @@ func (qs *QuickSort) partition(arr []interface{}, p int, r int) int {
 
 	for j := p; j < r; j++ {
 
-		if qs.compare(arr[j], x) >= 0 {
+		if qs.compare(arr[j], x) <= 0 {
 			i++
 			util.Swap(arr, i, j)
 		}
