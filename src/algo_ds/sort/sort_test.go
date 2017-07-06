@@ -16,8 +16,9 @@ var sorters = []struct {
 	name   string
 	sorter Sorter
 }{
-	{"QuickSort", NewQuickSort(compare)},
-	{"BubbleSort", NewBubbleSort(compare)},
+	{"QuickSort", NewSorter(QUICK, compare)},
+	{"BubbleSort", NewSorter(BUBBLE, compare)},
+	{"SelectionSort", NewSorter(SELECTION, compare)},
 }
 
 var dataSet = []struct {

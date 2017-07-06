@@ -2,9 +2,7 @@ package sort
 
 import "algo_ds/util"
 
-type QuickSort struct {
-	compare func(a interface{}, b interface{}) int
-}
+type QuickSort sorting
 
 func (qs *QuickSort) Sort(arr []interface{}) {
 	qs.quickSort(arr, 0, len(arr)-1)
@@ -32,8 +30,4 @@ func (qs *QuickSort) partition(arr []interface{}, p int, r int) int {
 	util.Swap(arr, i+1, r)
 
 	return i + 1
-}
-
-func NewQuickSort(compare func(a interface{}, b interface{}) int) *QuickSort {
-	return &QuickSort{compare}
 }
