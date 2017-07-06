@@ -4,3 +4,6 @@ This repo is a  place holder to practice algorithms and datastructures i studied
 Sort:
 ====
 - Quick Sort
+- Bubble Sort
+- Selection Sort
+- Insertion Sort
