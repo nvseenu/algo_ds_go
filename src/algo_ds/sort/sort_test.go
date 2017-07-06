@@ -19,6 +19,7 @@ var sorters = []struct {
 	{"QuickSort", NewSorter(QUICK, compare)},
 	{"BubbleSort", NewSorter(BUBBLE, compare)},
 	{"SelectionSort", NewSorter(SELECTION, compare)},
+	{"InsertionSort", NewSorter(INSERTION, compare)},
 }
 
 var dataSet = []struct {
@@ -50,7 +51,7 @@ func TestSort(t *testing.T) {
 			// Method under test
 			sdata.sorter.Sort(input)
 			if !reflect.DeepEqual(output, input) {
-				t.Error(sdata.name, " : Arrays are not sorted! expected:", output, "But got:", input)
+				t.Error(sdata.name, " : ", data.input, " are not sorted! expected:", output, "But got:", input)
 			}
 		}
 	}

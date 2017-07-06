@@ -6,6 +6,7 @@ const (
 	BUBBLE SortName = iota
 	QUICK
 	SELECTION
+	INSERTION
 )
 
 func NewSorter(name SortName, compare func(a interface{}, b interface{}) int) Sorter {
@@ -19,6 +20,8 @@ func NewSorter(name SortName, compare func(a interface{}, b interface{}) int) So
 		sorter = typeSwitch(&QuickSort{compare})
 	case SELECTION:
 		sorter = typeSwitch(&SelectionSort{compare})
+	case INSERTION:
+		sorter = typeSwitch(&InsertionSort{compare})
 	}
 	return sorter
 }
