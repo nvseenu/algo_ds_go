@@ -2,12 +2,19 @@ package sort
 
 import (
 	"algo_ds/util"
+	"fmt"
 	"reflect"
 	"testing"
 )
 
+func compare(a interface{}, b interface{}) int {
+	v1, _ := a.(int)
+	v2, _ := b.(int)
+	return v2 - v1
+}
+
 var sorters = []Sorter{
-	QuickSort{},
+	NewQuickSort(compare), NewBubbleSort(compare),
 }
 
 func TestSort(t *testing.T) {
@@ -18,7 +25,7 @@ func TestSort(t *testing.T) {
 		expArr := util.GenericArray([]int{1, 2, 3, 4, 5, 6, 7, 8})
 
 		if !reflect.DeepEqual(expArr, arr) {
-			t.Error("Arrays are not sorted! expected:", expArr, "But got:", arr)
+			t.Error(fmt.Sprintf("%v", s), " : Arrays are not sorted! expected:", expArr, "But got:", arr)
 		}
 	}
 }

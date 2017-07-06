@@ -3,27 +3,28 @@ package sort
 import "algo_ds/util"
 
 type QuickSort struct {
+	compare func(a interface{}, b interface{}) int
 }
 
-func (q QuickSort) Sort(arr []interface{}) {
-	quickSort(arr, 0, len(arr)-1)
+func (qs *QuickSort) Sort(arr []interface{}) {
+	qs.quickSort(arr, 0, len(arr)-1)
 }
 
-func quickSort(arr []interface{}, p int, r int) {
+func (qs *QuickSort) quickSort(arr []interface{}, p int, r int) {
 	if p < r {
-		q := partition(arr, p, r)
-		quickSort(arr, p, q-1)
-		quickSort(arr, q+1, r)
+		q := qs.partition(arr, p, r)
+		qs.quickSort(arr, p, q-1)
+		qs.quickSort(arr, q+1, r)
 	}
 }
 
-func partition(arr []interface{}, p int, r int) int {
-	x := util.IntType(arr[r])
+func (qs *QuickSort) partition(arr []interface{}, p int, r int) int {
+	x := arr[r]
 	i := p - 1
 
 	for j := p; j < r; j++ {
 
-		if util.IntType(arr[j]) <= x {
+		if qs.compare(arr[j], x) >= 0 {
 			i++
 			util.Swap(arr, i, j)
 		}
@@ -31,4 +32,8 @@ func partition(arr []interface{}, p int, r int) int {
 	util.Swap(arr, i+1, r)
 
 	return i + 1
+}
+
+func NewQuickSort(compare func(a interface{}, b interface{}) int) *QuickSort {
+	return &QuickSort{compare}
 }
