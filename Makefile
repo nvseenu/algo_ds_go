@@ -6,7 +6,7 @@ GOFMT=$(GOCMD) fmt
 GOCLEAN=$(GOCMD) clean
 
 TOP_LEVEL_PKG := algo_ds
-PKG_LIST := util sort array
+PKG_LIST := util sort array collections
 ALL_LIST := $(PKG_LIST)
 
 CLEAN_LIST := $(foreach pkg, $(ALL_LIST), $(pkg)_clean) 
