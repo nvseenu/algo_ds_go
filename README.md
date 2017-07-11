@@ -7,3 +7,10 @@ Sort:
 - Bubble Sort
 - Selection Sort
 - Insertion Sort
+
+DS:
+==
+- Ordered Array
+- Stack
+- Queue
+- Priority Queue
