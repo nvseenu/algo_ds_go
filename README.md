@@ -14,3 +14,4 @@ DS:
 - Stack
 - Queue
 - Priority Queue
+- Single Linked List
