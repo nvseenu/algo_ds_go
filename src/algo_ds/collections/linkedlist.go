@@ -7,12 +7,12 @@ type link struct {
 	next *link
 }
 
-type lldata struct {
+type singlyLinkedList struct {
 	head *link
 	size int
 }
 
-func (ll *lldata) Add(elm interface{}) {
+func (ll *singlyLinkedList) Add(elm interface{}) {
 	l := &link{elm, nil}
 
 	if ll.head == nil {
@@ -27,7 +27,7 @@ func (ll *lldata) Add(elm interface{}) {
 	ll.size++
 }
 
-func (ll *lldata) AddAt(index int, elm interface{}) error {
+func (ll *singlyLinkedList) AddAt(index int, elm interface{}) error {
 	pl := ll.head
 	entry := &link{elm, nil}
 
@@ -46,7 +46,7 @@ func (ll *lldata) AddAt(index int, elm interface{}) error {
 	ll.size++
 	return nil
 }
-func (ll *lldata) GetAt(index int) (interface{}, error) {
+func (ll *singlyLinkedList) GetAt(index int) (interface{}, error) {
 	l := ll.head
 	for i := 1; i < index; i++ {
 		l = l.next
@@ -54,7 +54,7 @@ func (ll *lldata) GetAt(index int) (interface{}, error) {
 	return l.data, nil
 }
 
-func (ll *lldata) Remove(elm interface{}) error {
+func (ll *singlyLinkedList) Remove(elm interface{}) error {
 
 	l := ll.head
 	var pl *link = nil
@@ -73,7 +73,7 @@ func (ll *lldata) Remove(elm interface{}) error {
 	}
 	return nil
 }
-func (ll *lldata) RemoveAt(index int) (interface{}, error) {
+func (ll *singlyLinkedList) RemoveAt(index int) (interface{}, error) {
 	pl := ll.head
 
 	//Move the pointer from head to previous of given index
@@ -94,12 +94,12 @@ func (ll *lldata) RemoveAt(index int) (interface{}, error) {
 	ll.size--
 	return entry.data, nil
 }
-func (ll *lldata) Size() int {
+func (ll *singlyLinkedList) Size() int {
 	return ll.size
 }
 
 func NewLinkedList() List {
-	var lld interface{} = &lldata{
+	var lld interface{} = &singlyLinkedList{
 		head: nil,
 		size: 0,
 	}
