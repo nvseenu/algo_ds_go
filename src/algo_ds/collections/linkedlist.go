@@ -1,7 +1,5 @@
 package collections
 
-import "reflect"
-
 type link struct {
 	data interface{}
 	next *link
@@ -12,90 +10,60 @@ type singlyLinkedList struct {
 	size int
 }
 
-func (ll *singlyLinkedList) Add(elm interface{}) {
-	l := &link{elm, nil}
+func (sll *singlyLinkedList) AddAt(index int, elm interface{}) error {
+	pnode := sll.find(index - 1)
+	nnode := &link{elm, nil}
 
-	if ll.head == nil {
-		ll.head = l
+	if pnode == nil {
+		t := sll.head
+		nnode.next = t
+		sll.head = nnode
 	} else {
-		lk := ll.head
-		for lk.next != nil {
-			lk = lk.next
-		}
-		lk.next = l
+		t := pnode.next
+		nnode.next = t
+		pnode.next = nnode
 	}
-	ll.size++
-}
-
-func (ll *singlyLinkedList) AddAt(index int, elm interface{}) error {
-	pl := ll.head
-	entry := &link{elm, nil}
-
-	//Find a previous link to given index
-	for i := 1; i < index; i++ {
-		pl = pl.next
-	}
-
-	if ll.size == 0 {
-		ll.head = entry
-	} else {
-		nlink := pl.next
-		pl.next = entry
-		entry.next = nlink
-	}
-	ll.size++
+	sll.size++
 	return nil
 }
-func (ll *singlyLinkedList) GetAt(index int) (interface{}, error) {
-	l := ll.head
-	for i := 1; i < index; i++ {
-		l = l.next
-	}
-	return l.data, nil
-}
+func (sll *singlyLinkedList) GetAt(index int) (interface{}, error) {
+	node := sll.find(index)
+	if node == nil {
+		return nil, nil
 
-func (ll *singlyLinkedList) Remove(elm interface{}) error {
-
-	l := ll.head
-	var pl *link = nil
-	for l != nil {
-		if reflect.DeepEqual(l.data, elm) {
-			if ll.Size() == 1 {
-				ll.head = nil
-			} else {
-				pl.next = l.next
-				l.next = nil
-			}
-			ll.size--
-		}
-		pl = l
-		l = l.next
-	}
-	return nil
-}
-func (ll *singlyLinkedList) RemoveAt(index int) (interface{}, error) {
-	pl := ll.head
-
-	//Move the pointer from head to previous of given index
-	for i := 1; i < index; i++ {
-		pl = pl.next
-	}
-
-	var entry *link = nil
-	if ll.size == 1 {
-		ll.head = nil
-		entry = pl
 	} else {
-		entry = pl.next
+		return node.data, nil
 	}
-
-	pl.next = entry.next
-	entry.next = nil
-	ll.size--
-	return entry.data, nil
 }
-func (ll *singlyLinkedList) Size() int {
-	return ll.size
+
+func (sll *singlyLinkedList) find(index int) *link {
+	if index < 0 {
+		return nil
+	}
+	node := sll.head
+	for i := 1; i <= index; i++ {
+		node = node.next
+	}
+	return node
+}
+
+func (sll *singlyLinkedList) RemoveAt(index int) (interface{}, error) {
+	pnode := sll.find(index - 1)
+	var elm interface{} = nil
+	if pnode == nil {
+		cnode := sll.head
+		sll.head = cnode.next
+		elm = cnode.data
+	} else {
+		cnode := pnode.next
+		pnode.next = cnode.next
+		elm = cnode.data
+	}
+	sll.size--
+	return elm, nil
+}
+func (sll *singlyLinkedList) Size() int {
+	return sll.size
 }
 
 func NewLinkedList() List {
