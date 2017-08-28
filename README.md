@@ -15,3 +15,6 @@ DS:
 - Queue
 - Priority Queue
 - Single Linked List
+- Dobubly linked List
+- Binary Search Tree
+- 2-3-4 Tree ( Insert and Find)
