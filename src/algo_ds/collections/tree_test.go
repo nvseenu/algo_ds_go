@@ -1,42 +1,43 @@
 package collections
 
 import (
+	"algo_ds/util"
 	"fmt"
 	"testing"
 )
 
-func compareInt(a interface{}, b interface{}) int {
-	v1, ok1 := a.(int)
-	if !ok1 {
-		panic(fmt.Sprintf("unable to convert %T as int", a))
+func executeWithTrees(f func(tree Tree, t *testing.T), t *testing.T) {
+	for _, tree := range CreateTrees() {
+		f(tree, t)
 	}
-	v2, ok2 := b.(int)
-	if !ok2 {
-		panic(fmt.Sprintf("unable to convert %T as int", b))
-	}
-	return v1 - v2
 }
 
 func TestNewTree(t *testing.T) {
-	tr := NewBinarySearchTree(compareInt)
-	if tr.Size() != 0 {
-		t.Error("Expected 0 for size , but got ", tr.Size())
+	executeWithTrees(testNewTree, t)
+}
+
+func testNewTree(tree Tree, t *testing.T) {
+	if tree.Size() != 0 {
+		t.Errorf("%v => Expected 0 for size , but got %v", tree, tree.Size())
 	}
 }
 
 func TestInsertInTree(t *testing.T) {
-	tr := NewBinarySearchTree(compareInt)
+	executeWithTrees(testInsertInTree, t)
+}
+
+func testInsertInTree(tree Tree, t *testing.T) {
 	for i := 1; i <= 10; i++ {
-		tr.Insert(i)
+		tree.Insert(i)
 
 	}
-	if tr.Size() != 10 {
-		t.Error("Expected size 10. but got ", tr.Size())
+	if tree.Size() != 10 {
+		t.Errorf("%v => Expected size 10. but got %v", tree, tree.Size())
 	}
 }
 
 func TestFindInTree(t *testing.T) {
-	tr := NewBinarySearchTree(compareInt)
+	tr := NewBinarySearchTree(util.CompareInt)
 	for i := 1; i <= 10; i++ {
 		tr.Insert(i)
 	}
@@ -54,6 +55,12 @@ func TestFindInTree(t *testing.T) {
 		t.Errorf("Expected nil, but got %v", val)
 	}
 
+}
+
+func CreateTrees() []Tree {
+	return []Tree{
+		NewBinarySearchTree(util.CompareInt),
+	}
 }
 
 type deleteData struct {
@@ -136,7 +143,7 @@ var testDataForDeletion = []deleteData{
 
 func TestDeleteNodeInTree(t *testing.T) {
 	for _, td := range testDataForDeletion {
-		tr := NewBinarySearchTree(compareInt)
+		tr := NewBinarySearchTree(util.CompareInt)
 		for _, elm := range td.elements {
 			tr.Insert(elm)
 		}
